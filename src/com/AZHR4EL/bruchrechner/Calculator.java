@@ -1,36 +1,15 @@
-package com.AZHR4EL.bruchrechner;;
+package com.AZHR4EL.bruchrechner;
 
-import java.util.Scanner;
+public class Calculator {
 
-public class Main {
+    public void calculate (String strUserInput) {
 
-    public static void main(String[] args) {
-
-        /*String strPlus = "+";
+        String strPlus = "+";
         String strMinus = "-";
         String strDivide = ":";
-        String strMultiply = "*";*/
+        String strMultiply = "*";
 
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        // User Input                                                                            //
-        System.out.println("Please enter a Fraction in following format:\nx/x [+-*:] x/x\"");
-
-        //Scanner scanner = new Scanner(System.in);
-
-        //String strUserInput = scanner.nextLine();
-
-        String strUserInput = "(1/2 + 1/4) * 1/3";
-
-        // Testfractions:
-        // 3/2 + 1/4 !!!
-
-        //                                                                                       //
-        ///////////////////////////////////////////////////////////////////////////////////////////
-
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        // User Input Conversion                                                                 //
-
-        /*char chArithmeticOperation = ' ';
+        char chArithmeticOperation = ' ';
         if (strUserInput.contains(strPlus)) { chArithmeticOperation = '+'; }
         if (strUserInput.contains(strMinus)) { chArithmeticOperation = '-'; }
         if (strUserInput.contains(strMultiply)) { chArithmeticOperation = '*'; }
@@ -96,7 +75,5 @@ public class Main {
             default:
                 break;
         }
-
-        System.out.println(tFractionX.printFractionReturner());*/
     }
 }
