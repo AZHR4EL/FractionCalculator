@@ -29,7 +29,7 @@ public class t_fraction {
         this.nDenominator = nDenominator;
     }
 
-    // GETTER //////////////////////////////////////////////////////
+////// GETTER //////////////////////////////////////////////////////
 
     public int getnNumerator() {
         return nNumerator;
@@ -39,113 +39,55 @@ public class t_fraction {
         return nDenominator;
     }
 
-    // STRING METHODS //////////////////////////////////////////////
+////// STRING METHODS //////////////////////////////////////////////
 
     public String getFractionString () {
 
         return this.nNumerator + "/" + this.nDenominator;
     }
 
-    // ARITHMETIC METHODS //////////////////////////////////////////
+////// ARITHMETIC METHODS //////////////////////////////////////////
 
     public void fractionAddition(t_fraction tFraction0, t_fraction tFraction1) {
 
-        int nGreatestCommonDivisor = greatestCommonDivisor(tFraction0, tFraction1);
+        t_fraction[] arrFractionArray = bringToSameDenominator(tFraction0, tFraction1);
 
-        if (nGreatestCommonDivisor <= 1) { // If there is no GCD above 1, expanding Fractions
+        tFraction0 = arrFractionArray[0];
+        tFraction1 = arrFractionArray[1];
 
-            t_fraction arrFractionArray[] = expandFraction(tFraction0, tFraction1);
-
-            tFraction0 = arrFractionArray[0];
-            tFraction1 = arrFractionArray[1];
-
-        } else { // If there is a GCD above 1, using it
-
-            int nFraction0Multiplicator = tFraction0.getnDenominator() / nGreatestCommonDivisor;
-            tFraction0.setNumerator(tFraction0.getnNumerator() * nFraction0Multiplicator);
-            tFraction0.setDenominator(nGreatestCommonDivisor);
-
-            int nFraction1Multiplicator = tFraction1.getnDenominator() / nGreatestCommonDivisor;
-            tFraction1.setNumerator(tFraction1.getnNumerator() * nFraction0Multiplicator);
-            tFraction1.setDenominator(nGreatestCommonDivisor);
-        }
-
-        //////////////////////////////////////////////////////////////////////////////////////////
-        // Addition of Fractions                                                                //
-        int nResultFractionNumerator = tFraction0.nNumerator + tFraction1.getnNumerator();
-
-        // Failure check
-        if (tFraction0.getnDenominator() != tFraction1.getnDenominator()) {
-
-            System.out.println("Program error, unequal denominators after addition/subtraction!");
-
-            t_fraction tNullFraction = new t_fraction();
-            return;
-        }
+        // Addition of Fractions   ///////////////////////////////////////////////////////////////
+        int nResultFractionNumerator = tFraction0.getnNumerator() + tFraction1.getnNumerator();
 
         int nResultFractionDenominator = tFraction0.getnDenominator();
 
         t_fraction tResultFraction = new t_fraction(nResultFractionNumerator, nResultFractionDenominator);
 
-        //                                                                                      //
-        //////////////////////////////////////////////////////////////////////////////////////////
+        // Reducing the Fraction for an adequate Result //////////////////////////////////////////
+        reduceFraction(tResultFraction);
 
-        reduceFraction(tResultFraction); // Reducing the Fraction for an adequate Result
-
+        // Setting this Objects Numerator / Denominator //////////////////////////////////////////
         this.setNumerator(tResultFraction.getnNumerator());
         this.setDenominator(tResultFraction.getnDenominator());
     }
 
     public void fractionSubtraction(t_fraction tFraction0, t_fraction tFraction1) {
 
-        int nGreatestCommonDivisor = greatestCommonDivisor(tFraction0, tFraction1);
+        t_fraction[] arrFractionArray = bringToSameDenominator(tFraction0, tFraction1);
 
-        if (nGreatestCommonDivisor <= 1) {
+        tFraction0 = arrFractionArray[0];
+        tFraction1 = arrFractionArray[1];
 
-            t_fraction arrFractionArray[] = expandFraction(tFraction0, tFraction1);
-
-            tFraction0 = arrFractionArray[0];
-            tFraction1 = arrFractionArray[1];
-
-        } else {
-
-            int nFraction0Multiplicator = tFraction0.getnDenominator() / nGreatestCommonDivisor;
-            tFraction0.setNumerator(tFraction0.getnNumerator() * nFraction0Multiplicator);
-            tFraction0.setDenominator(nGreatestCommonDivisor);
-
-            int nFraction1Multiplicator = tFraction1.getnDenominator() / nGreatestCommonDivisor;
-            tFraction1.setNumerator(tFraction1.getnNumerator() * nFraction0Multiplicator);
-            tFraction1.setDenominator(nGreatestCommonDivisor);
-        }
-
-        //////////////////////////////////////////////////////////////////////////////////////////
-        // Addition of Fractions                                                                //
-        int nResultFractionNumerator = tFraction0.nNumerator - tFraction1.getnNumerator();
-
-        // Failure check
-        if (tFraction0.getnDenominator() != tFraction1.getnDenominator()) {
-
-            System.out.println("Program error, unequal denominators after addition/subtraction!");
-
-            t_fraction tNullFraction = new t_fraction(0,0);
-            return;
-        }
+        // Subtraction of Fractions   ////////////////////////////////////////////////////////////
+        int nResultFractionNumerator = tFraction0.getnNumerator() - tFraction1.getnNumerator();
 
         int nResultFractionDenominator = tFraction0.getnDenominator();
 
         t_fraction tResultFraction = new t_fraction(nResultFractionNumerator, nResultFractionDenominator);
 
-        //                                                                                      //
-        //////////////////////////////////////////////////////////////////////////////////////////
-
-        //////////////////////////////////////////////////////////////////////////////////////////
-        // Fraction reduction                                                                   //
-
+        // Reducing the Fraction for an adequate Result //////////////////////////////////////////
         reduceFraction(tResultFraction);
 
-        //                                                                                      //
-        //////////////////////////////////////////////////////////////////////////////////////////
-
+        // Setting this Objects Numerator / Denominator //////////////////////////////////////////
         this.setNumerator(tResultFraction.getnNumerator());
         this.setDenominator(tResultFraction.getnDenominator());
     }
@@ -161,7 +103,40 @@ public class t_fraction {
         this.nNumerator = tFraction0.getnNumerator() * tFraction1.getnDenominator();
         this.nDenominator = tFraction0.getnDenominator() * tFraction1.getnNumerator();
     }
-    
+
+////// ADDITIONAL METHODS /////////////////////////////////////////////////////////////////////////
+
+    public t_fraction[] bringToSameDenominator (t_fraction tFraction0, t_fraction tFraction1) {
+
+        int nGreatestCommonDivisor = greatestCommonDivisor(tFraction0, tFraction1);
+
+        if (nGreatestCommonDivisor <= 1) { // If there is no GCD above 1, expanding Fractions
+
+            t_fraction[] arrFractionArray = expandFraction(tFraction0, tFraction1);
+
+            tFraction0 = arrFractionArray[0];
+            tFraction1 = arrFractionArray[1];
+
+        } else { // If there is a GCD above 1, using it
+
+            expandFractionByBigger(tFraction0, tFraction1);
+
+            t_fraction[] arrFractionArray = expandFractionByBigger(tFraction0, tFraction1);
+
+            tFraction0 = arrFractionArray[0];
+            tFraction1 = arrFractionArray[1];
+        }
+
+        // Failure check
+        if (tFraction0.getnDenominator() != tFraction1.getnDenominator()) {
+
+            System.out.println("Program error, unequal denominators after addition/subtraction!");
+            return new t_fraction[]{};
+        }
+
+        return new t_fraction[]{tFraction0, tFraction1};
+    }
+
     public int greatestCommonDivisor (t_fraction tFraction0, t_fraction tFraction1) {
 
         boolean greatestCommonDivisor = false;
@@ -186,8 +161,23 @@ public class t_fraction {
                 greatestCommonDivisor = true;
             }
         }
-
         return nCommonDivider;
+    }
+
+    public t_fraction[] expandFractionByBigger (t_fraction tFraction0, t_fraction tFraction1) {
+
+        if (tFraction0.getnDenominator() > tFraction1.getnDenominator()) {
+
+            int nExpandFactor = tFraction0.getnDenominator() / tFraction1.getnDenominator();
+            tFraction1.setNumerator(tFraction1.getnNumerator() * nExpandFactor);
+            tFraction1.setDenominator(tFraction0.getnDenominator());
+        } else if (tFraction0.getnDenominator() < tFraction1.getnDenominator()) {
+
+            int nExpandFactor = tFraction1.getnDenominator() / tFraction0.getnDenominator();
+            tFraction0.setNumerator(tFraction0.getnNumerator() * nExpandFactor);
+            tFraction0.setDenominator(tFraction1.getnDenominator());
+        }
+        return new t_fraction[]{tFraction0, tFraction1};
     }
 
     public t_fraction[] expandFraction (t_fraction tFraction0, t_fraction tFraction1) {
@@ -200,11 +190,10 @@ public class t_fraction {
         tFraction1.setNumerator( tFraction1.getnNumerator() * (nExpandedFraction / tFraction1.getnDenominator()) );
         tFraction1.setDenominator(nExpandedFraction);
 
-
         return new t_fraction[] {tFraction0, tFraction1};
     }
 
-    public t_fraction reduceFraction(t_fraction tFraction) {
+    public void reduceFraction(t_fraction tFraction) {
 
         for (int nReduceFactor = 2; nReduceFactor <= tFraction.getnDenominator(); nReduceFactor++) {
 
@@ -217,8 +206,6 @@ public class t_fraction {
                 tFraction.setDenominator(nReduceFactor);
             }
         }
-
-        return tFraction;
     }
 
     public String printFractionReturner () {

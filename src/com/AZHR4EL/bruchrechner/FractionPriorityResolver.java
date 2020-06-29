@@ -17,17 +17,11 @@ public class FractionPriorityResolver {
         this.strInputEquation = strInputEquation;
     }
 
-    public ArrayList<t_fraction> multipleFractionCalculator (ArrayList<ArrayList<Integer>> arlOperandsPriority, ArrayList<t_fraction> arlFractionArrayList) {
+    public t_fraction multipleFractionCalculator () {
 
-        FractionPriorityResolver fractionResolver = new FractionPriorityResolver(this.strInputEquation);
-        
-        ArrayList<ArrayList<Integer>> arlOperandArrayList = fractionResolver.arithmeticOperandProritizer();
-        ArrayList<t_fraction> arlStartingFractionArraylist = fractionResolver.multipleFractionLister();
+        ArrayList<ArrayList<Integer>> arlOperandsPriority = arithmeticOperandProritizer();
+        ArrayList<t_fraction> arlFractionArrayList = multipleFractionLister();
 
-        System.out.println(arlOperandsPriority);
-        for (t_fraction test: arlFractionArrayList) {
-            System.out.println("0: " + test.printFractionReturner());
-        }
         while (arlOperandsPriority.get(0).size() > 0) {
 
             t_fraction tFraction0 = arlFractionArrayList.get(arlOperandsPriority.get(0).get(0));
@@ -40,9 +34,7 @@ public class FractionPriorityResolver {
             arlFractionArrayList.remove(arlOperandsPriority.get(0).get(0) + 1);
             arlOperandsPriority.get(0).remove(0);
         }
-        for (t_fraction test: arlFractionArrayList) {
-            System.out.println("1: " + test.printFractionReturner());
-        }
+
         while (arlOperandsPriority.get(1).size() > 0) {
 
             t_fraction tFraction0 = arlFractionArrayList.get(arlOperandsPriority.get(1).get(0));
@@ -54,9 +46,6 @@ public class FractionPriorityResolver {
             arlFractionArrayList.set(arlOperandsPriority.get(1).get(0), tFractionX);
             arlFractionArrayList.remove(arlOperandsPriority.get(1).get(0) + 1);
             arlOperandsPriority.get(1).remove(0);
-        }
-        for (t_fraction test: arlFractionArrayList) {
-            System.out.println("2: " + test.printFractionReturner());
         }
 
         while (arlOperandsPriority.get(2).size() > 0) {
@@ -71,9 +60,7 @@ public class FractionPriorityResolver {
             arlFractionArrayList.remove(arlOperandsPriority.get(2).get(0) + 1);
             arlOperandsPriority.get(2).remove(0);
         }
-        for (t_fraction test: arlFractionArrayList) {
-            System.out.println("3: " + test.printFractionReturner());
-        }
+
         while (arlOperandsPriority.get(3).size() > 0) {
 
             t_fraction tFraction0 = arlFractionArrayList.get(arlOperandsPriority.get(3).get(0));
@@ -87,11 +74,12 @@ public class FractionPriorityResolver {
             arlOperandsPriority.get(3).remove(0);
         }
 
-        for (t_fraction test: arlFractionArrayList) {
-            System.out.println("4: " + test.printFractionReturner());
+        if (arlFractionArrayList.size() > 1) {
+
+            System.out.println("Error in multipleFractionCalculator, more than one resulting fraction!");
         }
 
-        return arlFractionArrayList;
+        return arlFractionArrayList.get(0);
     }
 
     public ArrayList<t_fraction> multipleFractionLister() { //, ArrayList<ArrayList<Integer>> arlArraylistOfArraylist
@@ -203,8 +191,6 @@ public class FractionPriorityResolver {
         arlOperandsPriority.add(AddOperandPositions);
         arlOperandsPriority.add(SubtractOperandPositions);
 
-        System.out.println(arlOperandsPriority);
-
         return arlOperandsPriority;
     }
 
@@ -308,40 +294,8 @@ public class FractionPriorityResolver {
             }
 
         }
-
-
-
-
     }
 
-    public void testFunction (String strUserInput) {
-
-        String strPlus = "+";
-        String strMinus = "-";
-        String strDivide = ":";
-        String strMultiply = "*";
-
-        char chArithmeticOperation = ' ';
-        if (strUserInput.contains(strPlus)) { chArithmeticOperation = '+'; }
-        if (strUserInput.contains(strMinus)) { chArithmeticOperation = '-'; }
-        if (strUserInput.contains(strMultiply)) { chArithmeticOperation = '*'; }
-        if (strUserInput.contains(strDivide)) { chArithmeticOperation = ':'; }
-
-        strUserInput = strUserInput.replace(" ", "");
-
-        String strFractionDivider = "/";
-        String strArithmethicChar = "[-+*:]";
-
-        String[] arrFractions = new String[2];
-        arrFractions = strUserInput.split(strArithmethicChar);
-
-        String[] arrFractionParts0 = new String[2];
-        arrFractionParts0 = arrFractions[0].split(strFractionDivider);
-
-        String[] arrFractionParts1 = new String[2];
-        arrFractionParts1 = arrFractions[1].split(strFractionDivider);
-        
-    }
 
     
 

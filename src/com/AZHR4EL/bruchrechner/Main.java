@@ -24,12 +24,9 @@ public class Main {
 
         FractionPriorityResolver fractionResolver = new FractionPriorityResolver(strUserInput);
 
-        ArrayList<ArrayList<Integer>> arlOperandArrayList = fractionResolver.arithmeticOperandProritizer();
-        ArrayList<t_fraction> arlStartingFractionArraylist = fractionResolver.multipleFractionLister();
+        t_fraction tResultFraction = fractionResolver.multipleFractionCalculator();
 
-        ArrayList<t_fraction> testarray = fractionResolver.multipleFractionCalculator(arlOperandArrayList, arlStartingFractionArraylist);
-
-        System.out.println(testarray.get(0).printFractionReturner());
+        System.out.println(tResultFraction.printFractionReturner());
 
         // Testfractions:
         // 3/2 + 1/4 !!!
