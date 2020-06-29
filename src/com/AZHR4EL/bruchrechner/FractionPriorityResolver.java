@@ -5,47 +5,93 @@ import java.util.ArrayList;
 
 public class FractionPriorityResolver {
 
-    String strInputEquation = "";
+    // Class variables  ////////////////////////////////////////////////////////////////////////////////////////////////
+    private String strInputEquation = "";
+
+    // Class constructors  /////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    public ArrayList<t_fraction> multipleFractionCalculator(String strInputEquation, ArrayList<ArrayList<Integer>> arlArraylistOfArraylist) {
+    public FractionPriorityResolver(String strInputEquation) {
+
+        strInputEquation = strInputEquation + " ";
+        this.strInputEquation = strInputEquation;
+    }
+
+    public void multipleFractionCalculator (ArrayList<ArrayList<Integer>> arlOperandsPriority, ArrayList<t_fraction> arlFractionArrayList) {
+
+        ArrayList<t_fraction> arlFractionArraylistNew = new ArrayList<>();
+
+        if (arlOperandsPriority.get(0).size() > 0) {
+
+            for (Integer arlOperationIndex : arlOperandsPriority.get(0)) {
+
+                t_fraction tFractionX = arlFractionArrayList.get(arlOperationIndex);
+
+            }
+        }
+
+    }
+
+
+
+    public ArrayList<t_fraction> multipleFractionLister() { //, ArrayList<ArrayList<Integer>> arlArraylistOfArraylist
 
         ArrayList<t_fraction> arlFractions = new ArrayList<t_fraction>();
 
-        for (int nCharacter = 0; nCharacter < strInputEquation.length() ; nCharacter++) {
+        boolean bFractionBeginningState = true;
+        boolean bNextFraction = false;
+        String strFraction = "";
+        String strNumerator = "";
+        String strDenominator = "";
 
-            char chCurrentCharacter = strInputEquation.charAt(nCharacter);
+        int nNumeratorBeginningIndex = 0;
+        int nNumeratorEndingIndex = 0;
+        int nDenominatorBeginningIndex = 0;
+        int nDenominatorEndingIndex = 0;
 
-            String strFraction = "";
-            String strNumerator = "";
-            String strDenominator = "";
+        for (int nCharacter = 0; nCharacter < this.strInputEquation.length() ; nCharacter++) {
 
-            if (chCurrentCharacter == '/') {
+            if (Character.isDigit(this.strInputEquation.charAt(nCharacter))) {
 
-                int nCharacterCounter = nCharacter - 1;
+                nNumeratorBeginningIndex = nCharacter;
 
-                int nNumeratorBeginningIndex = -1;
-                int nNumeratorEndingIndex = nCharacter - 1;
+                while (this.strInputEquation.charAt(nCharacter) != '/') {
 
-                int nDenominatorBeginningIndex = nCharacter + 1;
-                int nDenominatorEndingIndex = -1;
-
-                while ((strInputEquation.charAt(nCharacterCounter) != ' ') && (nCharacterCounter >= 0)) {
-
-                    nNumeratorBeginningIndex = nCharacterCounter;
-                    nCharacterCounter--;
+                    nCharacter++;
                 }
 
-                while ((strInputEquation.charAt(nCharacterCounter) != ' ') && (nCharacterCounter < strInputEquation.length())) {
+                if (this.strInputEquation.charAt(nCharacter) == '/') {
 
-                    nDenominatorEndingIndex = nCharacterCounter;
-                    nCharacterCounter++;
+                    nNumeratorEndingIndex = nCharacter;
                 }
 
-                strNumerator = strInputEquation.substring(nNumeratorBeginningIndex, nNumeratorEndingIndex + 1);
-                strDenominator = strInputEquation.substring(nDenominatorBeginningIndex, nDenominatorEndingIndex + 1);
+                while (!Character.isDigit(this.strInputEquation.charAt(nCharacter))) {
 
-                t_fraction tFraction = new t_fraction(Integer.parseInt(strNumerator), Integer.parseInt(strDenominator));
+                    nCharacter++;
+                }
+
+                if (Character.isDigit(this.strInputEquation.charAt(nCharacter))) {
+
+                    nDenominatorBeginningIndex = nCharacter;
+                };
+
+                while (Character.isDigit(this.strInputEquation.charAt(nCharacter))) {
+
+                    nCharacter++;
+                }
+
+                if (!Character.isDigit(this.strInputEquation.charAt(nCharacter))) {
+
+                    nDenominatorEndingIndex = nCharacter;
+                };
+
+                strNumerator = strInputEquation.substring(nNumeratorBeginningIndex, nNumeratorEndingIndex);
+                int nNumerator = Integer.parseInt(strNumerator);
+
+                strDenominator = strInputEquation.substring(nDenominatorBeginningIndex, nDenominatorEndingIndex);
+                int nDenominator = Integer.parseInt(strDenominator);
+
+                t_fraction tFraction = new t_fraction(nNumerator, nDenominator);
                 arlFractions.add(tFraction);
             }
         }
@@ -57,8 +103,12 @@ public class FractionPriorityResolver {
 
         int nArithmeticOperandsNumber = 0;
 
-        ArrayList<Integer> pointOperandPositions = new ArrayList<Integer>();
-        ArrayList<Integer> lineOperandPositions = new ArrayList<Integer>();
+        ArrayList<Integer> MultiplyOperandPositions = new ArrayList<Integer>();
+        ArrayList<Integer> DivideOperandPositions = new ArrayList<Integer>();
+        ArrayList<Integer> AddOperandPositions = new ArrayList<Integer>();
+        ArrayList<Integer> SubtractOperandPositions = new ArrayList<Integer>();
+
+        int nOperandSequence = 1;
 
         for (int nCharacter = 0; nCharacter < strInputEquation.length() ; nCharacter++) {
 
@@ -67,25 +117,29 @@ public class FractionPriorityResolver {
             switch (chCurrentCharacter) {
 
                 case '+':
-                    lineOperandPositions.add(nCharacter + 1);
+                    AddOperandPositions.add(nOperandSequence);
                     break;
                 case '-':
-                    lineOperandPositions.add(nCharacter + 1);
+                    SubtractOperandPositions.add(nOperandSequence);
                     break;
                 case '*':
-                    pointOperandPositions.add(nCharacter + 1);
+                    MultiplyOperandPositions.add(nOperandSequence);
                     break;
                 case '/':
-                    pointOperandPositions.add(nCharacter + 1);
+                    DivideOperandPositions.add(nOperandSequence);
                     break;
                 default:
                     break;
             }
+
+            nOperandSequence++;
         }
 
-        ArrayList<ArrayList<Integer>> arlOperandsPriority = new ArrayList<ArrayList<Integer>>();
-        arlOperandsPriority.add(pointOperandPositions);
-        arlOperandsPriority.add(lineOperandPositions);
+        ArrayList<ArrayList<Integer>> arlOperandsPriority = new ArrayList<>();
+        arlOperandsPriority.add(MultiplyOperandPositions);
+        arlOperandsPriority.add(DivideOperandPositions);
+        arlOperandsPriority.add(AddOperandPositions);
+        arlOperandsPriority.add(SubtractOperandPositions);
 
         return arlOperandsPriority;
     }

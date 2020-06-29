@@ -1,5 +1,6 @@
 package com.AZHR4EL.bruchrechner;;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -19,7 +20,16 @@ public class Main {
 
         //String strUserInput = scanner.nextLine();
 
-        String strUserInput = "(1/2 + 1/4) * 1/3";
+        String strUserInput = "1/2 + 1/4 * 1/3";
+
+        FractionPriorityResolver tFractionPrio = new FractionPriorityResolver(strUserInput);
+
+        ArrayList<t_fraction> testarray = tFractionPrio.multipleFractionCalculator();
+
+        for (t_fraction fraction : testarray) {
+
+            System.out.println(fraction.printFractionReturner());
+        }
 
         // Testfractions:
         // 3/2 + 1/4 !!!
