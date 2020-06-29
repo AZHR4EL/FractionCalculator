@@ -17,22 +17,77 @@ public class FractionPriorityResolver {
         this.strInputEquation = strInputEquation;
     }
 
-    public void multipleFractionCalculator (ArrayList<ArrayList<Integer>> arlOperandsPriority, ArrayList<t_fraction> arlFractionArrayList) {
+    public ArrayList<t_fraction> multipleFractionCalculator (ArrayList<ArrayList<Integer>> arlOperandsPriority, ArrayList<t_fraction> arlFractionArrayList) {
 
-        ArrayList<t_fraction> arlFractionArraylistNew = new ArrayList<>();
+        System.out.println(arlOperandsPriority);
+        for (t_fraction test: arlFractionArrayList) {
+            System.out.println("0: " + test.printFractionReturner());
+        }
+        while (arlOperandsPriority.get(0).size() > 0) {
 
-        if (arlOperandsPriority.get(0).size() > 0) {
+            t_fraction tFraction0 = arlFractionArrayList.get(arlOperandsPriority.get(0).get(0));
+            t_fraction tFraction1 = arlFractionArrayList.get(arlOperandsPriority.get(0).get(0) + 1);
 
-            for (Integer arlOperationIndex : arlOperandsPriority.get(0)) {
+            t_fraction tFractionX = new t_fraction();
+            tFractionX.fractionMultiplication(tFraction0, tFraction1);
 
-                t_fraction tFractionX = arlFractionArrayList.get(arlOperationIndex);
+            arlFractionArrayList.set(arlOperandsPriority.get(0).get(0), tFractionX);
+            arlFractionArrayList.remove(arlOperandsPriority.get(0).get(0) + 1);
+            arlOperandsPriority.get(0).remove(0);
+        }
+        for (t_fraction test: arlFractionArrayList) {
+            System.out.println("1: " + test.printFractionReturner());
+        }
+        while (arlOperandsPriority.get(1).size() > 0) {
 
-            }
+            t_fraction tFraction0 = arlFractionArrayList.get(arlOperandsPriority.get(1).get(0));
+            t_fraction tFraction1 = arlFractionArrayList.get(arlOperandsPriority.get(1).get(0) + 1);
+
+            t_fraction tFractionX = new t_fraction();
+            tFractionX.fractionDivision(tFraction0, tFraction1);
+
+            arlFractionArrayList.set(arlOperandsPriority.get(1).get(0), tFractionX);
+            arlFractionArrayList.remove(arlOperandsPriority.get(1).get(0) + 1);
+            arlOperandsPriority.get(1).remove(0);
+        }
+        for (t_fraction test: arlFractionArrayList) {
+            System.out.println("2: " + test.printFractionReturner());
         }
 
+        while (arlOperandsPriority.get(2).size() > 0) {
+
+            t_fraction tFraction0 = arlFractionArrayList.get(arlOperandsPriority.get(2).get(0));
+            t_fraction tFraction1 = arlFractionArrayList.get(arlOperandsPriority.get(2).get(0) + 1);
+
+            t_fraction tFractionX = new t_fraction();
+            tFractionX.fractionAddition(tFraction0, tFraction1);
+
+            arlFractionArrayList.set(arlOperandsPriority.get(2).get(0), tFractionX);
+            arlFractionArrayList.remove(arlOperandsPriority.get(2).get(0) + 1);
+            arlOperandsPriority.get(2).remove(0);
+        }
+        for (t_fraction test: arlFractionArrayList) {
+            System.out.println("3: " + test.printFractionReturner());
+        }
+        while (arlOperandsPriority.get(3).size() > 0) {
+
+            t_fraction tFraction0 = arlFractionArrayList.get(arlOperandsPriority.get(3).get(0));
+            t_fraction tFraction1 = arlFractionArrayList.get(arlOperandsPriority.get(3).get(0) + 1);
+
+            t_fraction tFractionX = new t_fraction();
+            tFractionX.fractionAddition(tFraction0, tFraction1);
+
+            arlFractionArrayList.set(arlOperandsPriority.get(3).get(0), tFractionX);
+            arlFractionArrayList.remove(arlOperandsPriority.get(3).get(0) + 1);
+            arlOperandsPriority.get(3).remove(0);
+        }
+
+        for (t_fraction test: arlFractionArrayList) {
+            System.out.println("4: " + test.printFractionReturner());
+        }
+
+        return arlFractionArrayList;
     }
-
-
 
     public ArrayList<t_fraction> multipleFractionLister() { //, ArrayList<ArrayList<Integer>> arlArraylistOfArraylist
 
@@ -99,7 +154,7 @@ public class FractionPriorityResolver {
         return arlFractions;
     }
 
-    public ArrayList<ArrayList<Integer>> arithmeticOperandProritizer (String strInputEquation) {
+    public ArrayList<ArrayList<Integer>> arithmeticOperandProritizer () {
 
         int nArithmeticOperandsNumber = 0;
 
@@ -108,31 +163,33 @@ public class FractionPriorityResolver {
         ArrayList<Integer> AddOperandPositions = new ArrayList<Integer>();
         ArrayList<Integer> SubtractOperandPositions = new ArrayList<Integer>();
 
-        int nOperandSequence = 1;
+        int nOperandSequence = 0;
 
-        for (int nCharacter = 0; nCharacter < strInputEquation.length() ; nCharacter++) {
+        for (int nCharacter = 0; nCharacter < this.strInputEquation.length() ; nCharacter++) {
 
-            char chCurrentCharacter = strInputEquation.charAt(nCharacter);
+            char chCurrentCharacter = this.strInputEquation.charAt(nCharacter);
 
             switch (chCurrentCharacter) {
 
                 case '+':
                     AddOperandPositions.add(nOperandSequence);
+                    nOperandSequence++;
                     break;
                 case '-':
                     SubtractOperandPositions.add(nOperandSequence);
+                    nOperandSequence++;
                     break;
                 case '*':
                     MultiplyOperandPositions.add(nOperandSequence);
+                    nOperandSequence++;
                     break;
-                case '/':
+                case ':':
                     DivideOperandPositions.add(nOperandSequence);
+                    nOperandSequence++;
                     break;
                 default:
                     break;
             }
-
-            nOperandSequence++;
         }
 
         ArrayList<ArrayList<Integer>> arlOperandsPriority = new ArrayList<>();
@@ -140,6 +197,8 @@ public class FractionPriorityResolver {
         arlOperandsPriority.add(DivideOperandPositions);
         arlOperandsPriority.add(AddOperandPositions);
         arlOperandsPriority.add(SubtractOperandPositions);
+
+        System.out.println(arlOperandsPriority);
 
         return arlOperandsPriority;
     }
