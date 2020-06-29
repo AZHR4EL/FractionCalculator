@@ -22,12 +22,12 @@ public class Main {
 
         String strUserInput = "1/2 + 1/4 * 1/3";
 
-        FractionPriorityResolver tFractionPrio = new FractionPriorityResolver(strUserInput);
+        FractionPriorityResolver fractionResolver = new FractionPriorityResolver(strUserInput);
 
-        ArrayList<ArrayList<Integer>> arlOperandArrayList = tFractionPrio.arithmeticOperandProritizer();
-        ArrayList<t_fraction> arlStartingFractionArraylist = tFractionPrio.multipleFractionLister();
+        ArrayList<ArrayList<Integer>> arlOperandArrayList = fractionResolver.arithmeticOperandProritizer();
+        ArrayList<t_fraction> arlStartingFractionArraylist = fractionResolver.multipleFractionLister();
 
-        ArrayList<t_fraction> testarray = tFractionPrio.multipleFractionCalculator(arlOperandArrayList, arlStartingFractionArraylist);
+        ArrayList<t_fraction> testarray = fractionResolver.multipleFractionCalculator(arlOperandArrayList, arlStartingFractionArraylist);
 
         System.out.println(testarray.get(0).printFractionReturner());
 

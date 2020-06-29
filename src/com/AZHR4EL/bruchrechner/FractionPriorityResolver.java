@@ -19,6 +19,11 @@ public class FractionPriorityResolver {
 
     public ArrayList<t_fraction> multipleFractionCalculator (ArrayList<ArrayList<Integer>> arlOperandsPriority, ArrayList<t_fraction> arlFractionArrayList) {
 
+        FractionPriorityResolver fractionResolver = new FractionPriorityResolver(this.strInputEquation);
+        
+        ArrayList<ArrayList<Integer>> arlOperandArrayList = fractionResolver.arithmeticOperandProritizer();
+        ArrayList<t_fraction> arlStartingFractionArraylist = fractionResolver.multipleFractionLister();
+
         System.out.println(arlOperandsPriority);
         for (t_fraction test: arlFractionArrayList) {
             System.out.println("0: " + test.printFractionReturner());
