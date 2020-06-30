@@ -20,12 +20,13 @@ public class Main {
 
         //String strUserInput = scanner.nextLine();
 
-        String strUserInput = "1/2 + 1/4 * 1/3";
+        String strUserInput = "(1/2 * (1/2 + 1/3) * (1/3 - 1/5 - 8/24)) : (1/6)";
 
         FractionPriorityResolver fractionResolver = new FractionPriorityResolver(strUserInput);
 
-        t_fraction tResultFraction = fractionResolver.multipleFractionCalculator();
+        t_fraction tResultFraction = fractionResolver.BracketFractionCalculator();
 
+        System.out.println(fractionResolver.getStrEquationMonitor());
         System.out.println(tResultFraction.printFractionReturner());
 
         // Testfractions:

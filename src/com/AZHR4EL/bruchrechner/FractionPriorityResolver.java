@@ -1,12 +1,12 @@
 package com.AZHR4EL.bruchrechner;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class FractionPriorityResolver {
 
     // Class variables  ////////////////////////////////////////////////////////////////////////////////////////////////
     private String strInputEquation = "";
+    private String strEquationMonitor = "";
 
     // Class constructors  /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -17,10 +17,43 @@ public class FractionPriorityResolver {
         this.strInputEquation = strInputEquation;
     }
 
-    public t_fraction multipleFractionCalculator () {
+    public String getStrEquationMonitor() {
+        return strEquationMonitor;
+    }
 
-        ArrayList<ArrayList<Integer>> arlOperandsPriority = arithmeticOperandProritizer();
-        ArrayList<t_fraction> arlFractionArrayList = multipleFractionLister();
+    public t_fraction BracketFractionCalculator() {
+
+        String strWholeEquation = this.strInputEquation;
+        String strLine = "--------------------------------------------------";
+        this.strEquationMonitor = strLine + "\n" + this.strEquationMonitor + this.strInputEquation;
+
+        while (checkBracketExistence()) {
+
+            int nBracketOpenIndex = innerBracketPositions()[0];
+            int nBracketCloseIndex = innerBracketPositions()[1];
+
+            String strBracketEquation = strWholeEquation.substring(nBracketOpenIndex + 1, nBracketCloseIndex);
+            String strReplacementEquation = strWholeEquation.substring(nBracketOpenIndex, nBracketCloseIndex + 1);
+
+            t_fraction tFractionX = multipleFractionCalculator(strBracketEquation);
+            String strResultingFraction = tFractionX.getnNumerator() + "/" + tFractionX.getnDenominator();
+
+            strWholeEquation.replace(strBracketEquation, strReplacementEquation);
+            this.strEquationMonitor = this.strEquationMonitor + "\n" + strWholeEquation;
+        }
+
+        t_fraction tResultFraction = multipleFractionCalculator(strWholeEquation);
+
+        this.strEquationMonitor = this.strEquationMonitor + "\n" + "Result: " + tResultFraction.printFractionReturner();
+        this.strEquationMonitor = this.strEquationMonitor + "\n" + strLine;
+
+        return tResultFraction;
+    }
+
+    public t_fraction multipleFractionCalculator (String strInputEquation) {
+
+        ArrayList<ArrayList<Integer>> arlOperandsPriority = arithmeticOperandSorter(strInputEquation);
+        ArrayList<t_fraction> arlFractionArrayList = multipleFractionLister(strInputEquation);
 
         while (arlOperandsPriority.get(0).size() > 0) {
 
@@ -82,13 +115,10 @@ public class FractionPriorityResolver {
         return arlFractionArrayList.get(0);
     }
 
-    public ArrayList<t_fraction> multipleFractionLister() { //, ArrayList<ArrayList<Integer>> arlArraylistOfArraylist
+    public ArrayList<t_fraction> multipleFractionLister(String strInputEquation) { //, ArrayList<ArrayList<Integer>> arlArraylistOfArraylist
 
         ArrayList<t_fraction> arlFractions = new ArrayList<t_fraction>();
 
-        boolean bFractionBeginningState = true;
-        boolean bNextFraction = false;
-        String strFraction = "";
         String strNumerator = "";
         String strDenominator = "";
 
@@ -97,38 +127,38 @@ public class FractionPriorityResolver {
         int nDenominatorBeginningIndex = 0;
         int nDenominatorEndingIndex = 0;
 
-        for (int nCharacter = 0; nCharacter < this.strInputEquation.length() ; nCharacter++) {
+        for (int nCharacter = 0; nCharacter < strInputEquation.length() ; nCharacter++) {
 
-            if (Character.isDigit(this.strInputEquation.charAt(nCharacter))) {
+            if (Character.isDigit(strInputEquation.charAt(nCharacter))) {
 
                 nNumeratorBeginningIndex = nCharacter;
 
-                while (this.strInputEquation.charAt(nCharacter) != '/') {
+                while (strInputEquation.charAt(nCharacter) != '/') {
 
                     nCharacter++;
                 }
 
-                if (this.strInputEquation.charAt(nCharacter) == '/') {
+                if (strInputEquation.charAt(nCharacter) == '/') {
 
                     nNumeratorEndingIndex = nCharacter;
                 }
 
-                while (!Character.isDigit(this.strInputEquation.charAt(nCharacter))) {
+                while (!Character.isDigit(strInputEquation.charAt(nCharacter))) {
 
                     nCharacter++;
                 }
 
-                if (Character.isDigit(this.strInputEquation.charAt(nCharacter))) {
+                if (Character.isDigit(strInputEquation.charAt(nCharacter))) {
 
                     nDenominatorBeginningIndex = nCharacter;
                 };
 
-                while (Character.isDigit(this.strInputEquation.charAt(nCharacter))) {
+                while (Character.isDigit(strInputEquation.charAt(nCharacter))) {
 
                     nCharacter++;
                 }
 
-                if (!Character.isDigit(this.strInputEquation.charAt(nCharacter))) {
+                if (!Character.isDigit(strInputEquation.charAt(nCharacter))) {
 
                     nDenominatorEndingIndex = nCharacter;
                 };
@@ -147,7 +177,7 @@ public class FractionPriorityResolver {
         return arlFractions;
     }
 
-    public ArrayList<ArrayList<Integer>> arithmeticOperandProritizer () {
+    public ArrayList<ArrayList<Integer>> arithmeticOperandSorter(String strInputEquation) {
 
         int nArithmeticOperandsNumber = 0;
 
@@ -158,9 +188,9 @@ public class FractionPriorityResolver {
 
         int nOperandSequence = 0;
 
-        for (int nCharacter = 0; nCharacter < this.strInputEquation.length() ; nCharacter++) {
+        for (int nCharacter = 0; nCharacter < strInputEquation.length() ; nCharacter++) {
 
-            char chCurrentCharacter = this.strInputEquation.charAt(nCharacter);
+            char chCurrentCharacter = strInputEquation.charAt(nCharacter);
 
             switch (chCurrentCharacter) {
 
@@ -195,86 +225,92 @@ public class FractionPriorityResolver {
     }
 
 
-    public int arithmeticOperandsNumber (String strInputEquation) {
+    public boolean numberOperandsFractionsCorrect () {
 
         int nArithmeticOperandsNumber = 0;
+        int nFractionsNumber = 0;
+        boolean bFractionsOperandsNumberFits = false;
 
-        for (int nCharacter = 0; nCharacter < strInputEquation.length() ; nCharacter++) {
+        for (int nCharacter = 0; nCharacter < this.strInputEquation.length() ; nCharacter++) {
 
-            char chCurrentCharacter = strInputEquation.charAt(nCharacter);
+            char chCurrentCharacter = this.strInputEquation.charAt(nCharacter);
 
             switch (chCurrentCharacter) {
 
                 case '+':
-                    nArithmeticOperandsNumber++;
-                    break;
                 case '-':
-                    nArithmeticOperandsNumber++;
-                    break;
                 case '*':
+                case ':':
                     nArithmeticOperandsNumber++;
                     break;
                 case '/':
-                    nArithmeticOperandsNumber++;
+                    nFractionsNumber++;
                     break;
                 default:
                     break;
             }
         }
 
-        return nArithmeticOperandsNumber;
+        if (nArithmeticOperandsNumber == (nFractionsNumber - 1)) {
+
+            bFractionsOperandsNumberFits = true;
+        }
+
+        return bFractionsOperandsNumberFits;
     }
 
-    public boolean checkBracketExistance(String strInputEquation) {
+    public boolean checkBracketExistence() {
 
         boolean bBracketsExist = false;
-        int nBracketSum = 0;
+        int nOpenBracketSum = 0;
+        int nCloseBracketSum = 0;
 
-        for (int nCharacter = 0; nCharacter < strInputEquation.length() ; nCharacter++) {
+        for (int nCharacter = 0; nCharacter < this.strInputEquation.length() ; nCharacter++) {
 
-            char chCurrentCharacter = strInputEquation.charAt(nCharacter);
+            char chCurrentCharacter = this.strInputEquation.charAt(nCharacter);
 
-            if ((chCurrentCharacter == '(') || (chCurrentCharacter == ')')) {
-                nBracketSum++;
+            if (chCurrentCharacter == '(') {
+                nOpenBracketSum++;
+                bBracketsExist = true;
+            }
+            else if (chCurrentCharacter == ')') {
+                nCloseBracketSum++;
+                bBracketsExist = true;
             }
         }
 
-        if (nBracketSum % 2 != 0) {
+        if (nOpenBracketSum != nCloseBracketSum) {
 
             System.out.println("Error, uneven number of brackets!");
         }
-        else if (nBracketSum > 0) {
 
-            return true;
-        }
-
-        return false;
+        return bBracketsExist;
     }
 
-    public int[] innerBracketPositions (String strInputEquation) {
+    public int[] innerBracketPositions () {
 
-        for (int nCharacter = 0; nCharacter < strInputEquation.length(); nCharacter++) {
+        int nLastOpenBracketIndex = 0;
+        int nLastCloseBracketIndex = 0;
 
-            char chCurrentChar = strInputEquation.charAt(nCharacter);
+        boolean bLastBracketWasOpening = false;
 
-            int nLastOpenBracketIndex = 0;
-            int nLastCloseBracketIndex = 0;
+        for (int nCharacter = 0; nCharacter < this.strInputEquation.length(); nCharacter++) {
 
-            boolean bFoundOpenBracket = false;
-            boolean bFoundCloseBracket = false;
+            char chCurrentChar = this.strInputEquation.charAt(nCharacter);
 
             if (chCurrentChar == '(') {
 
                 nLastOpenBracketIndex = nCharacter;
+                bLastBracketWasOpening = true;
             }
-            if (chCurrentChar == ')') {
+            if (chCurrentChar == ')' && bLastBracketWasOpening) {
 
                 nLastCloseBracketIndex = nCharacter;
+                break;
             }
-
-            return new int[]{nLastOpenBracketIndex, nLastCloseBracketIndex};
         }
-        return new int[1]; //TODO: Dummy auswechseln
+
+        return new int[] {nLastOpenBracketIndex, nLastCloseBracketIndex};
     }
 
     public void bracketPriorityResolver (String strInputEquation) {
