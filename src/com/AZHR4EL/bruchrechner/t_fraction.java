@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 public class t_fraction {
 
-    // VARIABLES ///////////////////////////////////////////////////////////////////////////////////////////////////////
+////// VARIABLES ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private int nNumerator = 0;
-    private int nDenominator = 0;
+    private int nNumerator = 0; // This objects Numerator
+    private int nDenominator = 0; // This objects Denominator
 
-    // KONSTRUKTOR /////////////////////////////////////////////////////////////////////////////////////////////////////
+////// CONSTRUCTOR /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     t_fraction () {
         this.nNumerator = 0;
@@ -21,9 +21,9 @@ public class t_fraction {
         this.nDenominator = nDenominator;
     }
 
-    // METHODS /////////////////////////////////////////////////////////////////////////////////////////////////////////
+////// METHODS /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // SETTER //////////////////////////////////////////////////////
+////// SETTER //////////////////////////////////////////////////////
     public void setNumerator(int nNumerator) {
         this.nNumerator = nNumerator;
     }
@@ -52,6 +52,10 @@ public class t_fraction {
 
     public void fractionDivision(t_fraction tFraction0, t_fraction tFraction1) {
 
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Will do a division of two given fraction, reduce the fraction and save it into the object
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         boolean bNegativeFraction = false;
 
         if (tFraction0.getnNumerator() < 0 || tFraction1.getnNumerator() < 0) { bNegativeFraction = true; }
@@ -63,21 +67,25 @@ public class t_fraction {
 
         if (bNegativeFraction) { this.nNumerator *= -1; }
         reduceFraction();
-        System.out.println(tFraction0.getnNumerator() + "/" + tFraction0.getnDenominator() + " : " + tFraction1.getnNumerator() + "/"
-                + tFraction1.getnDenominator() + " = " + this.getnNumerator() + "/" + this.getnDenominator());
     }
 
     public void fractionMultiplication(t_fraction tFraction0, t_fraction tFraction1) {
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Will do a multiplication of two given fraction, reduce the fraction and save it into the object
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         this.nNumerator = tFraction0.getnNumerator() * tFraction1.getnNumerator();
         this.nDenominator = tFraction0.getnDenominator() * tFraction1.getnDenominator();
 
         reduceFraction();
-        System.out.println(tFraction0.getnNumerator() + "/" + tFraction0.getnDenominator() + " * " + tFraction1.getnNumerator() + "/"
-                + tFraction1.getnDenominator() + " = " + this.getnNumerator() + "/" + this.getnDenominator());
     }
 
     public void fractionAddition(t_fraction tFraction0, t_fraction tFraction1) {
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Will do an addition of two given fraction, reduce the fraction and save it into the object
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         t_fraction[] arrFractionArray = bringToSameDenominator(tFraction0, tFraction1);
 
@@ -96,11 +104,13 @@ public class t_fraction {
 
         // Reducing the Fraction for an adequate Result //////////////////////////////////////////
         reduceFraction();
-        System.out.println(tFraction0.getnNumerator() + "/" + tFraction0.getnDenominator() + " + " + tFraction1.getnNumerator() + "/"
-                + tFraction1.getnDenominator() + " = " + this.getnNumerator() + "/" + this.getnDenominator());
     }
 
     public void fractionSubtraction(t_fraction tFraction0, t_fraction tFraction1) {
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Will do a subtraction of two given fraction, reduce the fraction and save it into the object
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         t_fraction[] arrFractionArray = bringToSameDenominator(tFraction0, tFraction1);
 
@@ -119,15 +129,15 @@ public class t_fraction {
 
         // Reducing the Fraction for an adequate Result //////////////////////////////////////////
         reduceFraction();
-        System.out.println(tFraction0.getnNumerator() + "/" + tFraction0.getnDenominator() + " - " + tFraction1.getnNumerator() + "/"
-                + tFraction1.getnDenominator() + " = " + this.getnNumerator() + "/" + this.getnDenominator());
     }
 
 ////// ADDITIONAL METHODS /////////////////////////////////////////////////////////////////////////
 
     public t_fraction[] bringToSameDenominator (t_fraction tFraction0, t_fraction tFraction1) {
 
-        //int nLeastCommonMultiple = leastCommonMultiple(tFraction0, tFraction1);  //TODO: Korrektur, funktioniert nicht korrekt
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Will bring two fractions to the same denominator and return these as Array
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         int nLeastCommonMultiple = tFraction0.getnDenominator() * tFraction1.getnDenominator();
 
@@ -141,80 +151,11 @@ public class t_fraction {
         return new t_fraction[]{tFraction0, tFraction1};
     }
 
-    public int leastCommonMultiple(t_fraction tFraction0, t_fraction tFraction1) {
-
-        int nLeastCommonMultiple = tFraction0.getnDenominator();
-
-        if (tFraction1.getnDenominator() > tFraction0.getnDenominator()) {
-
-            nLeastCommonMultiple = tFraction1.getnDenominator();
-        }
-
-        while (!((nLeastCommonMultiple % tFraction0.getnNumerator() != 0)
-                || (nLeastCommonMultiple % tFraction1.getnNumerator() != 0))) {
-
-            nLeastCommonMultiple++;
-        }
-
-        return nLeastCommonMultiple;
-    }
-
-//    public int greatestCommonDivisor (t_fraction tFraction0, t_fraction tFraction1) {
-//
-//        boolean greatestCommonDivisor = false;
-//        int nCommonDivider = 0;
-//
-//        if (tFraction0.getnDenominator() < tFraction1.getnDenominator()) {
-//
-//            nCommonDivider = tFraction0.getnDenominator() + 1;
-//
-//        } else {
-//
-//            nCommonDivider = tFraction1.getnDenominator() + 1;
-//
-//        }
-//
-//        while (!greatestCommonDivisor) {
-//
-//            nCommonDivider--;
-//
-//            if ((tFraction0.getnDenominator() % nCommonDivider == 0) && (tFraction1.getnDenominator() % nCommonDivider == 0)) {
-//
-//                greatestCommonDivisor = true;
-//            }
-//        }
-//        return nCommonDivider;
-//    }
-//
-//    public t_fraction[] expandFractionByGCD(t_fraction tFraction0, t_fraction tFraction1, int nGreatestCommonDivisor) {
-//
-//        if ((tFraction0.getnNumerator() % nGreatestCommonDivisor == 0)
-//                && (tFraction1.getnNumerator() % nGreatestCommonDivisor == 0)) {
-//
-//            tFraction0.setNumerator(tFraction0.getnNumerator() * (tFraction0.getnDenominator() / nGreatestCommonDivisor));
-//            tFraction0.setDenominator(nGreatestCommonDivisor);
-//
-//            tFraction1.setNumerator(tFraction1.getnNumerator() * (tFraction1.getnDenominator() / nGreatestCommonDivisor));
-//            tFraction1.setDenominator(nGreatestCommonDivisor);
-//        }
-//
-//        return new t_fraction[]{tFraction0, tFraction1};
-//    }
-//
-//    public t_fraction[] expandFraction (t_fraction tFraction0, t_fraction tFraction1) {
-//
-//        int nExpandedFraction = tFraction0.getnDenominator() * tFraction1.getnDenominator();
-//
-//        tFraction0.setNumerator( tFraction0.getnNumerator() * (nExpandedFraction / tFraction0.getnDenominator()) );
-//        tFraction0.setDenominator(nExpandedFraction);
-//
-//        tFraction1.setNumerator( tFraction1.getnNumerator() * (nExpandedFraction / tFraction1.getnDenominator()) );
-//        tFraction1.setDenominator(nExpandedFraction);
-//
-//        return new t_fraction[] {tFraction0, tFraction1};
-//    }
-
     public void reduceFraction() {
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Will reduce the fraction of this object to the smallest possible
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         int nReduceFactor = 1;
 
@@ -240,6 +181,10 @@ public class t_fraction {
     }
 
     public String printFractionReturner () {
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Will return the fraction of this object as string
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         int nWholeNumberExists = 0;
         int nWholeNumber = 0;
